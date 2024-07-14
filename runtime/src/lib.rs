@@ -251,6 +251,14 @@ impl pallet_template::Config for Runtime {
 	type WeightInfo = pallet_template::weights::SubstrateWeight<Runtime>;
 }
 
+impl pallet_remark::Config for Runtime {
+	#[doc = " The overarching event type."]
+	type RuntimeEvent = RuntimeEvent;
+
+	#[doc = " Weight information for extrinsics in this pallet."]
+	type WeightInfo = ();
+}
+
 // Create the runtime by composing the FRAME pallets that were previously configured.
 #[frame_support::runtime]
 mod runtime {
@@ -292,6 +300,9 @@ mod runtime {
 	// Include the custom logic from the pallet-template in the runtime.
 	#[runtime::pallet_index(7)]
 	pub type TemplateModule = pallet_template;
+
+	#[runtime::pallet_index(8)]
+	pub type Remark = pallet_remark;
 }
 
 /// The address format for describing accounts.
