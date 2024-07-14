@@ -143,6 +143,8 @@ parameter_types! {
 	pub BlockLength: frame_system::limits::BlockLength = frame_system::limits::BlockLength
 		::max_with_normal_ratio(5 * 1024 * 1024, NORMAL_DISPATCH_RATIO);
 	pub const SS58Prefix: u8 = 42;
+	pub const MaxNameLength: u32 = 32;
+	pub const ReservationFeeAmount: Balance = 1000;
 }
 
 /// The default types are being injected by [`derive_impl`](`frame_support::derive_impl`) from
@@ -259,6 +261,20 @@ impl pallet_remark::Config for Runtime {
 	type WeightInfo = ();
 }
 
+impl nicks::Config for Runtime {
+	#[doc = " The overarching event type."]
+	type RuntimeEvent = RuntimeEvent;
+
+	#[doc = " The currency trait."]
+	type Currency = Balances;
+
+	#[doc = " The maximum length a name may be."]
+	type MaxLength = MaxNameLength;
+
+	#[doc = " Reservation fee."]
+	type ReservationFee = ReservationFeeAmount;
+}
+
 // Create the runtime by composing the FRAME pallets that were previously configured.
 #[frame_support::runtime]
 mod runtime {
@@ -303,6 +319,9 @@ mod runtime {
 
 	#[runtime::pallet_index(8)]
 	pub type Remark = pallet_remark;
+
+	#[runtime::pallet_index(9)]
+	pub type Nicks = nicks;
 }
 
 /// The address format for describing accounts.
